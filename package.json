@@ -21,6 +21,8 @@
   },
   "scripts": {
     "dev:tsc": "tsc -w",
-    "dev:node": "nodemon ."
+    "dev:node": "nodemon .",
+    "build": "tsc",
+    "run": "node ./dist/index.js"
   }
 }
