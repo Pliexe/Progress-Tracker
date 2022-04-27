@@ -1,4 +1,4 @@
-import { ActionRowData, CommandInteraction, ComponentType, MessageActionRowComponentData } from "discord.js";
+import { ActionRowData, ButtonStyle, CommandInteraction, ComponentType, MessageActionRowComponentData } from "discord.js";
 import { Command } from "../commandhandler";
 import db from 'quick.db';
 import { IFeature } from "../types";
@@ -40,6 +40,15 @@ export = class extends Command {
                     if(feature) {
                         await interaction.update({
                             content: "Removed: " + feature.name,
+                            components: [{
+                                type: ComponentType.ActionRow,
+                                components: [{
+                                    type: ComponentType.Button,
+                                    label: "Back",
+                                    customId: "back",
+                                    style: ButtonStyle.Success
+                                }]
+                            }]
                         });
                     } else {
                         await interaction.reply({ content: "Feature not found", ephemeral: true });

@@ -1,4 +1,4 @@
-import { ActionRowData, ApplicationCommandOptionType, CommandInteraction, ComponentType, MessageActionRowComponentData } from "discord.js";
+import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData } from "discord.js";
 import { Command } from "../commandhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
@@ -47,6 +47,15 @@ export = class extends Command {
                                 title: `${getStatusEmote(feature.status)} ${feature.name}`,
                                 description: feature.description ?? "No description provided",
                                 
+                            }],
+                            components: [{
+                                type: ComponentType.ActionRow,
+                                components: [{
+                                    type: ComponentType.Button,
+                                    label: "Back",
+                                    customId: "back",
+                                    style: ButtonStyle.Success
+                                }]
                             }]
                         });
                     } else {

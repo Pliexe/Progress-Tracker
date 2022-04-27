@@ -1,4 +1,4 @@
-import { ActionRowData, ApplicationCommandOptionType, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData } from "discord.js";
+import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData } from "discord.js";
 import { Command } from "../commandhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
@@ -59,6 +59,15 @@ export = class extends Command {
 
                         await selectinteraction.update({
                             content: "Feature status set to: " + interaction.options.get("status", true).name,
+                            components: [{
+                                type: ComponentType.ActionRow,
+                                components: [{
+                                    type: ComponentType.Button,
+                                    label: "Back",
+                                    customId: "back",
+                                    style: ButtonStyle.Success
+                                }]
+                            }]
                         });
                     } else {
                         await selectinteraction.reply({ content: "Feature not found", ephemeral: true });
