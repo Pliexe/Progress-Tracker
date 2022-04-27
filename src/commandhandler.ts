@@ -86,6 +86,7 @@ export class CommandHandler {
 
     async registerCommands() {
         this.guilds = process.env.GUILDS?.split(",") ?? this.bot.guilds.cache.map(x => x.id);
+        console.log("Guilds: ", this.guilds);
         for(let guildId of this.guilds) {
             const guild = this.bot.guilds.cache.get(guildId);
             if(guild) await this.registerGuild(guild);
