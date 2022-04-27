@@ -32,6 +32,7 @@ export = class extends Command {
             }, async (interaction, updatemsg) => {
                 if(interaction.isSelectMenu() && interaction.customId === "list-item") {
                     const index = parseInt(interaction.values[0]);
+                    const features = db.get("features");;
                     const feature = features[index];
                     features.splice(index, 1);
                     db.set("features", features);

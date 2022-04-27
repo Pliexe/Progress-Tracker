@@ -40,6 +40,7 @@ export = class extends Command {
             }, async (selectinteraction, updatemsg) => {
                 if(selectinteraction.isSelectMenu() && selectinteraction.customId === "list-item") {
                     const index = parseInt(selectinteraction.values[0]);
+                    const features = db.get("features");
                     const feature = features[index];
                     const status = interaction.options.get("status", true).value as number;
                     
