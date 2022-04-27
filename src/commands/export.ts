@@ -30,7 +30,7 @@ export = class extends Command {
         switch(interaction.options.get("format", true).value as number) {
             case 1:
             {
-                const excelFileBuffer = xlsx.build([{name: "Features", data: [["Name", "Description", "Status", "Start Date", "End Date"],...features.map(x => [x.name, x.description, getStatusString(x.status), x.startDate ? new Date(x.startDate) : "", x.endDate ? new Date(x.endDate) : ""])], options: { '!cols': [{ wch: 20} , {wch: 50}, {wch: 6}, {wch: 10}, {wch: 10}] }}])
+                const excelFileBuffer = xlsx.build([{name: "Features", data: [["Id", "Name", "Description", "Status", "Start Date", "End Date"],...features.map(x => [x.id, x.name, x.description, getStatusString(x.status), x.startDate ? new Date(x.startDate) : "", x.endDate ? new Date(x.endDate) : ""])], options: { '!cols': [{wch: 4}, { wch: 20} , {wch: 50}, {wch: 6}, {wch: 10}, {wch: 10}] }}])
 
                 await interaction.reply({
                     files: [{ attachment: excelFileBuffer, name: "features.xlsx", contentType: "xlsx" }]
@@ -39,7 +39,7 @@ export = class extends Command {
             break;
             case 2:
             {
-                const text = features.map(x => `${x.startDate ? `${new Date(x.startDate).toLocaleDateString("en-UK")} ${new Date(x.startDate).toLocaleTimeString("en-UK")}` : "??"} - ${x.endDate ? `${new Date(x.endDate).toLocaleDateString("en-UK")} ${new Date(x.endDate).toLocaleTimeString("en-UK")}` : "??"} => (${getStatusString(x.status)}) (${getStatusEmote(x.status)}) ${x.name}:\n\t${x.description}`).join("\n================================================\n");
+                const text = features.map(x => `#${x.id} | ${x.startDate ? `${new Date(x.startDate).toLocaleDateString("en-UK")} ${new Date(x.startDate).toLocaleTimeString("en-UK")}` : "??"} - ${x.endDate ? `${new Date(x.endDate).toLocaleDateString("en-UK")} ${new Date(x.endDate).toLocaleTimeString("en-UK")}` : "??"} => (${getStatusString(x.status)}) (${getStatusEmote(x.status)}) ${x.name}:\n\t${x.description}`).join("\n================================================\n");
                 await interaction.reply({
                     files: [{ attachment: Buffer.from(text), name: "features.txt", contentType: "text/plain" }]
                 });

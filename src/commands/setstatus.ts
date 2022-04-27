@@ -26,7 +26,7 @@ export = class extends Command {
 
         if(features && features.length > 0) {
             await showCustomPages(interaction, 10, features, (data, row, page, pages, start) => {
-                const select: ActionRowData<MessageActionRowComponentData> = { type: ComponentType.ActionRow, components: [{ type: ComponentType.SelectMenu, customId: "list-item", options: data.map((x, i) => ({ label: x.name, emoji: { name: getStatusEmote(x.status) }, description: x.description.substring(0, 100), value: (start + i).toString() }))}] };
+                const select: ActionRowData<MessageActionRowComponentData> = { type: ComponentType.ActionRow, components: [{ type: ComponentType.SelectMenu, customId: "list-item", options: data.map((x, i) => ({ label: x.name, emoji: { name: getStatusEmote(x.status) }, description: x.description.substring(0, 100), value: x.id.toString() }))}] };
                 return {
                     embeds: [{
                         title: "Select an feature to start working on!",
@@ -40,29 +40,29 @@ export = class extends Command {
             }, async (selectinteraction, updatemsg) => {
                 if(selectinteraction.isSelectMenu() && selectinteraction.customId === "list-item") {
                     const index = parseInt(selectinteraction.values[0]);
-                    const features = db.get("features");
-                    const feature = features[index];
+                    const features = db.get("features") as IFeature[];
+                    const feature = features.find(x => x.id === index);
                     const status = interaction.options.get("status", true).value as number;
                     
-                    features[index].status = status;
-                    switch(status) {
-                        case FeatureStatus.InProgress:
-                            features[index].startDate = Date.now();
-                            break;
-                        case FeatureStatus.Done:
-                            features[index].endDate = Date.now();
-                            break;
-                    }
-
-                    db.set("features", features);
-
                     if(feature) {
+                        feature.status = status;
+                        switch(status) {
+                            case FeatureStatus.InProgress:
+                                feature.startDate = Date.now();
+                                break;
+                            case FeatureStatus.Done:
+                                feature.endDate = Date.now();
+                                break;
+                        }
+
+                        db.set("features", features);
+
                         await selectinteraction.update({
                             content: "Feature status set to: " + interaction.options.get("status", true).name,
                         });
                     } else {
                         await selectinteraction.reply({ content: "Feature not found", ephemeral: true });
-                    }                   
+                    }
                 }
             }, 0)
         } else await interaction.reply("No features have been submitted yet!");

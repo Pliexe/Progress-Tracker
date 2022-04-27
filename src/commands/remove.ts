@@ -18,7 +18,7 @@ export = class extends Command {
 
         if(features && features.length > 0) {
             await showCustomPages(interaction, 10, features, (data, row, page, pages, start) => {
-                const select: ActionRowData<MessageActionRowComponentData> = { type: ComponentType.ActionRow, components: [{ type: ComponentType.SelectMenu, customId: "list-item", options: data.map((x, i) => ({ label: x.name, emoji: { name: getStatusEmote(x.status) }, description: x.description.substring(0, 100), value: (start + i).toString() }))}] };
+                const select: ActionRowData<MessageActionRowComponentData> = { type: ComponentType.ActionRow, components: [{ type: ComponentType.SelectMenu, customId: "list-item", options: data.map((x, i) => ({ label: x.name, emoji: { name: getStatusEmote(x.status) }, description: x.description.substring(0, 100), value: x.id.toString() }))}] };
                 return {
                     embeds: [{
                         title: "Select an feature to remove it!",
@@ -32,8 +32,8 @@ export = class extends Command {
             }, async (interaction, updatemsg) => {
                 if(interaction.isSelectMenu() && interaction.customId === "list-item") {
                     const index = parseInt(interaction.values[0]);
-                    const features = db.get("features");;
-                    const feature = features[index];
+                    const features = db.get("features") as IFeature[];
+                    const feature = features.find(x => x.id === index);
                     features.splice(index, 1);
                     db.set("features", features);
 
