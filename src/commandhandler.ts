@@ -42,7 +42,7 @@ export class CommandHandler {
     private bot: Bot;
     private commands = new Map<string, Command>();
     public aliases: Map<string, string> = new Map();
-    private guilds: string[] = process.env.GUILDS?.split(",") ?? [];
+    private guilds!: string[];
     
     constructor(bot: Bot) {
         this.bot = bot;
@@ -85,6 +85,7 @@ export class CommandHandler {
     }
 
     async registerCommands() {
+        this.guilds = process.env.GUILDS?.split(",") ?? this.bot.guilds.cache.map(x => x.id);
         for(let guildId of this.guilds) {
             const guild = this.bot.guilds.cache.get(guildId);
             if(guild) await this.registerGuild(guild);
