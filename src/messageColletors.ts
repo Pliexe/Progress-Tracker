@@ -163,7 +163,7 @@ export function showCustomPages<T>(interaction: CommandInteraction | MessageComp
     (JSONEncodable<APIActionRowComponent<APIMessageActionRowComponent>>
     | ActionRowData<MessageActionRowComponentData | MessageActionRowComponentBuilder>
     | APIActionRowComponent<APIMessageActionRowComponent>
-    )[] | undefined) }, customInteraction: (interaction: MessageComponentInteraction<CacheType>, updateMsg?: (interaction: MessageComponentInteraction) => Promise<void>) => Promise<void>, index = 0): Promise<void> {
+    )[] | undefined) }, customInteraction: (interaction: MessageComponentInteraction<CacheType>, updateMsg?: (interaction: MessageComponentInteraction) => Promise<void>) => Promise<{ back: boolean; newData?: T[] } | void>, index = 0): Promise<void> {
     return new Promise(async (res, rej) => {
         try {
             if (index < 0) {
@@ -262,7 +262,15 @@ export function showCustomPages<T>(interaction: CommandInteraction | MessageComp
                         await updateMessage(compinteraction);
                         break;
                     default:
-                        await customInteraction(compinteraction, updateMessage);
+                        const res = await customInteraction(compinteraction, updateMessage);
+                        if(typeof res === "object") {
+                            if(res.back) {
+                                updateMessage(compinteraction);
+                            }
+                            if(res.newData) {
+                                data = res.newData;
+                            }
+                        }
                         break;
 
                 }

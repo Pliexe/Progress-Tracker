@@ -63,6 +63,8 @@ export = class extends Command {
                     } else {
                         await selectinteraction.reply({ content: "Feature not found", ephemeral: true });
                     }
+                } else if(interaction.isButton() && interaction.customId === "back") {
+                    return { back: true, newData: (db.get("features") as IFeature[]).filter(x => x.status !== FeatureStatus.Done) };
                 }
             }, 0)
         } else await interaction.reply("No features have been submitted yet!");

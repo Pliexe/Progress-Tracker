@@ -45,12 +45,15 @@ export = class extends Command {
                         await interaction.update({
                             embeds: [{
                                 title: `${getStatusEmote(feature.status)} ${feature.name}`,
-                                description: feature.description ?? "No description provided"
+                                description: feature.description ?? "No description provided",
+                                
                             }]
                         });
                     } else {
                         await interaction.reply({ content: "Feature not found", ephemeral: true });
-                    }                   
+                    }
+                } else if(interaction.isButton() && interaction.customId === "back") {
+                    return { back: true };
                 }
             }, 0)
         } else await interaction.reply("No features have been submitted yet or non match the filter!");

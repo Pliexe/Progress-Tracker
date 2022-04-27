@@ -44,6 +44,8 @@ export = class extends Command {
                     } else {
                         await interaction.reply({ content: "Feature not found", ephemeral: true });
                     }                   
+                } else if(interaction.isButton() && interaction.customId === "back") {
+                    return { back: true, newData: db.get("features") };
                 }
             }, 0)
         } else await interaction.reply("No features have been submitted yet!");
