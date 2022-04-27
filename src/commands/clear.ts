@@ -1,0 +1,26 @@
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
+import { Command } from "../commandhandler";
+import db from 'quick.db';
+import { IFeature } from "../types";
+import xlsx from 'node-xlsx';
+import { getStatusEmote, getStatusString } from "../util";
+
+export = class extends Command {
+    constructor() {
+        super({
+            description: "Clear all features",
+            options: []
+        })
+    }
+
+    public async execute(interaction: CommandInteraction): Promise<void> {
+        const features: IFeature[] = db.get("features");
+        if(features && features.length <= 0) {
+            await interaction.reply("No features have been submitted yet!");
+            return;
+        }
+
+        db.set("features", []);
+        interaction.reply("All features have been cleared!");
+    }
+}
