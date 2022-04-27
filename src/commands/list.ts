@@ -21,8 +21,8 @@ export = class extends Command {
     public async execute(interaction: CommandInteraction): Promise<void> {
 
         const features: IFeature[] = db.get("features");
-        const filter = interaction.options.get("status", false)?.value;
-        const filtered = features && filter ? features.filter(x => x.status === filter) : features;
+        const filter = interaction.options.get("status", false)?.value;        
+        const filtered = features && filter !== undefined ? features.filter(x => x.status === filter) : features;
 
         if(filtered && filtered.length > 0) {
             
