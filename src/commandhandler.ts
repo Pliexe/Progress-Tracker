@@ -42,6 +42,7 @@ export class CommandHandler {
     private bot: Bot;
     private commands = new Map<string, Command>();
     public aliases: Map<string, string> = new Map();
+    private guilds: string[] = process.env.GUILDS?.split(",") ?? [];
     
     constructor(bot: Bot) {
         this.bot = bot;
@@ -84,8 +85,9 @@ export class CommandHandler {
     }
 
     async registerCommands() {
-        for(let [_, guild] of this.bot.guilds.cache) {
-            await this.registerGuild(guild);
+        for(let guildId of this.guilds) {
+            const guild = this.bot.guilds.cache.get(guildId);
+            if(guild) await this.registerGuild(guild);
         }
     }
     
@@ -96,11 +98,13 @@ export class CommandHandler {
     }
 
     run(interaction: CommandInteraction) {        
-        if(interaction.commandName) {
-            const command = this.commands.get(interaction.commandName);
-    
-            if(command) {
-                command.execute(interaction);
+        if(interaction.guildId && this.guilds.includes(interaction.guildId)) {
+            if(interaction.commandName) {
+                const command = this.commands.get(interaction.commandName);
+        
+                if(command) {
+                    command.execute(interaction);
+                }
             }
         }
     }
