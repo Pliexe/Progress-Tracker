@@ -38,7 +38,7 @@ export = class extends Command {
                     db.set("features", features);
 
                     if(feature) {
-                        await interaction.reply({
+                        await interaction.update({
                             content: "Removed: " + feature.name,
                         });
                     } else {
