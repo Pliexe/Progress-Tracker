@@ -24,7 +24,7 @@ export = class extends Command {
         const filter = interaction.options.get("status", false)?.value;
         const filtered = features && filter ? features.filter(x => x.status === filter) : features;
 
-        if(filtered.length > 0) {
+        if(filtered && filtered.length > 0) {
             
             await showCustomPages(interaction, 10, filtered, (data, row, page, pages, start) => {
                 const select: ActionRowData<MessageActionRowComponentData> = { type: ComponentType.ActionRow, components: [{ type: ComponentType.SelectMenu, customId: "list-item", options: data.map((x, i) => ({ label: x.name, emoji: { name: getStatusEmote(x.status) }, description: x.description.substring(0, 100), value: (start + i).toString() }))}] };
