@@ -21,6 +21,6 @@ export = class extends Command {
         }
 
         db.set("features", []);
-        interaction.reply("All features have been cleared!");
+        await interaction.reply("All features have been cleared!");
     }
 }
