@@ -57,7 +57,7 @@ export = class extends Command {
                     db.set("features", features);
 
                     if(feature) {
-                        await selectinteraction.reply({
+                        await selectinteraction.update({
                             content: "Feature status set to: " + interaction.options.get("status", true).name,
                         });
                     } else {
