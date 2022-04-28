@@ -61,18 +61,21 @@ export = class extends Command {
                                     label: "Mark as In-Progress",
                                     customId: "in-progress:"+feature.id,
                                     style: ButtonStyle.Secondary,
-                                    disabled: !(feature.status === FeatureStatus.Open)
+                                    disabled: !(feature.status === FeatureStatus.Open),
+                                    emoji: { name: ":hourglass:" }
                                 }, {
                                     type: ComponentType.Button,
                                     label: "Mark as Done",
                                     customId: "done:"+feature.id,
                                     style: ButtonStyle.Secondary,
-                                    disabled: !(feature.status === FeatureStatus.InProgress)
+                                    disabled: !(feature.status === FeatureStatus.InProgress),
+                                    emoji: { name: ":white_check_mark:" }
                                 }, {
                                     type: ComponentType.Button,
                                     label: "Back",
                                     customId: "back",
-                                    style: ButtonStyle.Success
+                                    style: ButtonStyle.Success,
+                                    emoji: { name: ":back:" }
                                 }]
                             }]
                         });
