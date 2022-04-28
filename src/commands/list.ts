@@ -46,7 +46,6 @@ export = class extends Command {
                             embeds: [{
                                 title: `${getStatusEmote(feature.status)} ${feature.name}`,
                                 description: feature.description ?? "No description provided",
-                                
                             }],
                             components: [{
                                 type: ComponentType.ActionRow,
@@ -62,7 +61,7 @@ export = class extends Command {
                         await interaction.reply({ content: "Feature not found", ephemeral: true });
                     }
                 } else if(interaction.isButton() && interaction.customId === "back") {
-                    return { back: true };
+                    return { back: true, newData: (filter !== undefined ? features.filter(x => x.status === filter) : features) };
                 }
             }, 0)
         } else await interaction.reply("No features have been submitted yet or non match the filter!");
