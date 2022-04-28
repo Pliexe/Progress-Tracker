@@ -103,14 +103,14 @@ export = class extends Command {
                                     label: "Edit",
                                     customId: "edit:"+feature.id,
                                     style: ButtonStyle.Danger,
-                                    disabled: (feature.status !== FeatureStatus.Done),
+                                    disabled: (feature.status === FeatureStatus.Done),
                                     emoji: { name: "✍️" }
                                 }, {
                                     type: ComponentType.Button,
                                     label: "Delete",
                                     customId: "delete:"+feature.id,
                                     style: ButtonStyle.Danger,
-                                    disabled: (feature.status !== FeatureStatus.Done),
+                                    disabled: (feature.status === FeatureStatus.Done),
                                     emoji: { name: "❌" }
                                 }, {
                                     type: ComponentType.Button,
