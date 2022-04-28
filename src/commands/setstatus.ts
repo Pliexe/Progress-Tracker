@@ -59,6 +59,7 @@ export = class extends Command {
 
                         await selectinteraction.update({
                             content: "Feature status set to: " + interaction.options.get("status", true).name,
+                            embeds: undefined,
                             components: [{
                                 type: ComponentType.ActionRow,
                                 components: [{
