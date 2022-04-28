@@ -40,6 +40,7 @@ export = class extends Command {
                     if(feature) {
                         await interaction.update({
                             content: "Removed: " + feature.name,
+                            embeds: [],
                             components: [{
                                 type: ComponentType.ActionRow,
                                 components: [{

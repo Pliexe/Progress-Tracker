@@ -264,11 +264,11 @@ export function showCustomPages<T>(interaction: CommandInteraction | MessageComp
                     default:
                         const res = await customInteraction(compinteraction, updateMessage);
                         if(typeof res === "object") {
-                            if(res.back) {
-                                updateMessage(compinteraction);
-                            }
                             if(res.newData) {
                                 data = res.newData;
+                            }
+                            if(res.back) {
+                                await updateMessage(compinteraction);
                             }
                         }
                         break;
