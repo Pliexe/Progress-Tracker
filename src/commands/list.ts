@@ -39,7 +39,7 @@ export = class extends Command {
                     components: row ? [row, select] : [select]
                 }
             }, async (interaction, updatemsg) => {
-                if((interaction.isSelectMenu() && interaction.customId === "list-item") || (interaction.isButton() && (interaction.customId.startsWith("done:") || interaction.customId.startsWith("in-progress:")))) {
+                if((interaction.isSelectMenu() && interaction.customId === "list-item") || (interaction.isButton() && (interaction.customId.startsWith("done:") || interaction.customId.startsWith("in-progress:") || interaction.customId.startsWith("delete:") || interaction.customId.startsWith("edit:") || interaction.customId.startsWith("yes_delete:") || interaction.customId.startsWith("no_delete:")))) {
                     const id = parseInt(interaction.isSelectMenu() ? interaction.values[0] : interaction.customId.split(":")[1]);
                     const feature = filtered.find(x => x.id === id);
                     if(feature) {
@@ -49,6 +49,24 @@ export = class extends Command {
                             } else if(interaction.customId.startsWith("in-progress:")) {
                                 feature.status = FeatureStatus.InProgress;
                             } else if(interaction.customId.startsWith("delete:")) {
+                                await interaction.update({ embeds: [{ description: "Are you sure you want to delete this request?", color: Colors.Red }],
+                                    components: [{
+                                        type: ComponentType.ActionRow,
+                                        components: [{
+                                            type: ComponentType.Button,
+                                            label: "Yes",
+                                            style: ButtonStyle.Success,
+                                            customId: "yes_delete:" + id
+                                        }, {
+                                            type: ComponentType.Button,
+                                            label: "No",
+                                            style: ButtonStyle.Danger,
+                                            customId: "no_delete:" + id
+                                        }]
+                                    }]
+                                });
+                                return;
+                            } else if(interaction.customId.startsWith("yes_delete:")) {
                                 features.splice(features.findIndex(x => x.id === id), 1);
                                 db.set("features", features);
                                 await interaction.update({ embeds: [{ description: "Deleted!", color: Colors.Red }] });
