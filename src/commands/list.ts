@@ -40,7 +40,7 @@ export = class extends Command {
                 }
             }, async (interaction, updatemsg) => {
                 if((interaction.isSelectMenu() && interaction.customId === "list-item") || (interaction.isButton() && (interaction.customId.startsWith("done:") || interaction.customId.startsWith("in-progress:")))) {
-                    const id = interaction.isSelectMenu() ? interaction.values[0] : parseInt(interaction.customId.split(":")[1]);
+                    const id = parseInt(interaction.isSelectMenu() ? interaction.values[0] : interaction.customId.split(":")[1]);
                     const feature = filtered.find(x => x.id === id);
                     if(feature) {
                         if(interaction.isButton()) {
