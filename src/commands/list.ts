@@ -1,4 +1,4 @@
-import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData, TextInputStyle } from "discord.js";
+import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, Colors, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData, TextInputStyle } from "discord.js";
 import { Command } from "../commandhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
@@ -50,6 +50,9 @@ export = class extends Command {
                                 feature.status = FeatureStatus.InProgress;
                             } else if(interaction.customId.startsWith("delete:")) {
                                 features.splice(features.findIndex(x => x.id === id), 1);
+                                db.set("features", features);
+                                await interaction.update({ embeds: [{ description: "Deleted!", color: Colors.Red }] });
+                                return;
                             } else if(interaction.customId.startsWith("edit:")) {
                                 await interaction.showModal({
                                     title: "Edit Feature",
@@ -102,7 +105,7 @@ export = class extends Command {
                                     type: ComponentType.Button,
                                     label: "Edit",
                                     customId: "edit:"+feature.id,
-                                    style: ButtonStyle.Danger,
+                                    style: ButtonStyle.Primary,
                                     disabled: (feature.status === FeatureStatus.Done),
                                     emoji: { name: "✍️" }
                                 }, {
@@ -111,7 +114,7 @@ export = class extends Command {
                                     customId: "delete:"+feature.id,
                                     style: ButtonStyle.Danger,
                                     disabled: (feature.status === FeatureStatus.Done),
-                                    emoji: { name: "❌" }
+                                    emoji: { name: "🇽" }
                                 }, {
                                     type: ComponentType.Button,
                                     label: "Back",
