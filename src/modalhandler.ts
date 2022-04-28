@@ -9,7 +9,7 @@ export class Modal {
         this.customId = customId;
     }
 
-    public async execute(interaction: ModalSubmitInteraction): Promise<void> {
+    public async execute(interaction: ModalSubmitInteraction, data?: string | undefined): Promise<void> {
         await interaction.reply("This command is not yet implemented.");
         return;
     }
@@ -37,10 +37,12 @@ export class ModalHandler {
     }
 
     run(interaction: ModalSubmitInteraction) {
-        const command = this.modals.get(interaction.customId);
+        const [modal, data] = interaction.customId.split(":");
+        
+        const command = this.modals.get(modal);
 
         if(command) {
-            command.execute(interaction);
+            command.execute(interaction, data);
         }
     }
 }

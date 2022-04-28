@@ -1,4 +1,4 @@
-import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData } from "discord.js";
+import { ActionRowData, ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Constants, MessageActionRowComponentData, TextInputStyle } from "discord.js";
 import { Command } from "../commandhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
@@ -40,13 +40,40 @@ export = class extends Command {
                 }
             }, async (interaction, updatemsg) => {
                 if((interaction.isSelectMenu() && interaction.customId === "list-item") || (interaction.isButton() && (interaction.customId.startsWith("done:") || interaction.customId.startsWith("in-progress:")))) {
-                    const feature = filtered.find(x => x.id === parseInt(interaction.isSelectMenu() ? interaction.values[0] : interaction.customId.split(":")[1]));
+                    const id = interaction.isSelectMenu() ? interaction.values[0] : parseInt(interaction.customId.split(":")[1]);
+                    const feature = filtered.find(x => x.id === id);
                     if(feature) {
                         if(interaction.isButton()) {
                             if(interaction.customId.startsWith("done:")) {
                                 feature.status = FeatureStatus.Done;
                             } else if(interaction.customId.startsWith("in-progress:")) {
                                 feature.status = FeatureStatus.InProgress;
+                            } else if(interaction.customId.startsWith("delete:")) {
+                                features.splice(features.findIndex(x => x.id === id), 1);
+                            } else if(interaction.customId.startsWith("edit:")) {
+                                await interaction.showModal({
+                                    title: "Edit Feature",
+                                    customId: "edit-feature:"+id.toString(),
+                                    components: [{
+                                        type: ComponentType.ActionRow,
+                                        components: [{
+                                            type: ComponentType.TextInput,
+                                            label: "Feature name",
+                                            customId: "feature-name",
+                                            style: TextInputStyle.Short,
+                                            maxLength: 100,
+                                            value: feature.name,
+                                        }, {
+                                            type: ComponentType.TextInput,
+                                            label: "Feature description",
+                                            customId: "feature-description",
+                                            style: TextInputStyle.Paragraph,
+                                            maxLength: 4000, // Discord limits embed field value to 4096 characters
+                                            value: feature.description,
+                                        }]
+                                    }]
+                                });
+                                return;
                             }
                             db.set("features", features);
                         }
@@ -71,6 +98,20 @@ export = class extends Command {
                                     style: ButtonStyle.Secondary,
                                     disabled: !(feature.status === FeatureStatus.InProgress),
                                     emoji: { name: "✅" }
+                                }, {
+                                    type: ComponentType.Button,
+                                    label: "Edit",
+                                    customId: "edit:"+feature.id,
+                                    style: ButtonStyle.Danger,
+                                    disabled: (feature.status !== FeatureStatus.Done),
+                                    emoji: { name: "✍️" }
+                                }, {
+                                    type: ComponentType.Button,
+                                    label: "Delete",
+                                    customId: "delete:"+feature.id,
+                                    style: ButtonStyle.Danger,
+                                    disabled: (feature.status !== FeatureStatus.Done),
+                                    emoji: { name: "❌" }
                                 }, {
                                     type: ComponentType.Button,
                                     label: "Back",
