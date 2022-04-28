@@ -39,8 +39,8 @@ export = class extends Command {
                     components: row ? [row, select] : [select]
                 }
             }, async (interaction, updatemsg) => {
-                if(interaction.isSelectMenu() && interaction.customId === "list-item") {
-                    const feature = filtered.find(x => x.id === parseInt(interaction.values[0]));
+                if((interaction.isSelectMenu() && interaction.customId === "list-item") || (interaction.isButton() && (interaction.customId.startsWith("done:") || interaction.customId.startsWith("in-progress:")))) {
+                    const feature = filtered.find(x => x.id === parseInt(interaction.isSelectMenu() ? interaction.values[0] : interaction.customId.split(":")[1]));
                     if(feature) {
                         await interaction.update({
                             embeds: [{
@@ -50,6 +50,18 @@ export = class extends Command {
                             components: [{
                                 type: ComponentType.ActionRow,
                                 components: [{
+                                    type: ComponentType.Button,
+                                    label: "Mark as In-Progress",
+                                    customId: "in-progress:"+feature.id,
+                                    style: ButtonStyle.Secondary,
+                                    disabled: feature.status === FeatureStatus.Open
+                                }, {
+                                    type: ComponentType.Button,
+                                    label: "Mark as Done",
+                                    customId: "done:"+feature.id,
+                                    style: ButtonStyle.Secondary,
+                                    disabled: feature.status === FeatureStatus.InProgress
+                                }, {
                                     type: ComponentType.Button,
                                     label: "Back",
                                     customId: "back",
