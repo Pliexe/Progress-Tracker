@@ -48,6 +48,7 @@ export = class extends Command {
                             } else if(interaction.customId.startsWith("in-progress:")) {
                                 feature.status = FeatureStatus.InProgress;
                             }
+                            db.set("features", features);
                         }
                         await interaction.update({
                             embeds: [{
