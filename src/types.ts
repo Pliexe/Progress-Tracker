@@ -1,7 +1,7 @@
 export enum FeatureStatus {
     Open,
     InProgress,
-    Done,
+    Done
 }
 
 export interface IFeature {

@@ -1,6 +1,6 @@
 import { ModalBuilder, TextInputBuilder } from "@discordjs/builders";
 import { CommandInteraction, ComponentType, Constants, InteractionType, ModalAssertions, TextInputStyle } from "discord.js";
-import { Command } from "../commandhandler";
+import { Command } from "../utils/handlers/commandhandler";
 
 export = class extends Command {
     constructor() {

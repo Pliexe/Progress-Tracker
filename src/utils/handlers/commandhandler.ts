@@ -1,7 +1,7 @@
 import { ApplicationCommandDataResolvable, ApplicationCommandOptionData, CommandInteraction, Guild } from "discord.js";
 import { lstatSync, readdirSync } from "fs";
 import path from "path";
-import { Bot } from "./bot";
+import { Bot } from "../../bot";
 
 interface ICommandOptions {
     description: string;
@@ -63,7 +63,7 @@ export class CommandHandler {
     }
 
     setup() {
-        const cmdLocations: string[] = CommandHandler.readFiles(path.join(__dirname, "commands")).filter(file => file.endsWith('.js'));
+        const cmdLocations: string[] = CommandHandler.readFiles(path.join(__dirname, "../../commands")).filter(file => file.endsWith('.js'));
         const importedFiles = cmdLocations.map(require);
 
         importedFiles.forEach((file, i) => {

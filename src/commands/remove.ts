@@ -1,5 +1,5 @@
 import { ActionRowData, ButtonStyle, CommandInteraction, ComponentType, MessageActionRowComponentData } from "discord.js";
-import { Command } from "../commandhandler";
+import { Command } from "../utils/handlers/commandhandler";
 import db from 'quick.db';
 import { IFeature } from "../types";
 import { getStatusEmote } from "../util";

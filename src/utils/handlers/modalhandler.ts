@@ -19,7 +19,7 @@ export class ModalHandler {
     private modals = new Map<string, Modal>();
 
     setup() {
-        const cmdLocations: string[] = CommandHandler.readFiles(path.join(__dirname, "modals")).filter(file => file.endsWith('.js'));
+        const cmdLocations: string[] = CommandHandler.readFiles(path.join(__dirname, "../../modals")).filter(file => file.endsWith('.js'));
         const importedFiles = cmdLocations.map(require);
 
         importedFiles.forEach((file, i) => {

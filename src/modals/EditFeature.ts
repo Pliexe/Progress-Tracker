@@ -1,7 +1,8 @@
-import { ModalSubmitInteraction, CacheType } from "discord.js";
-import { Modal } from "../modalhandler";
+import { ModalSubmitInteraction, CacheType, Message } from "discord.js";
+import { Modal } from "../utils/handlers/modalhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
+import { Messages } from "../utils";
 
 export = class extends Modal {
     constructor() {
@@ -9,8 +10,13 @@ export = class extends Modal {
     }
 
     public async execute(interaction: ModalSubmitInteraction<CacheType>, data: string): Promise<void> {
-        const id = parseInt(data);
-        const feature = (db.get("features") as IFeature[] | undefined)?.find(x => x.id === id);
+        const [i] = data.split("_");
+
+        const id = parseInt(i);
+
+        const features = (db.get("features") as IFeature[]);
+        
+        const feature = features.find(x => x.id === id);
 
         if(!feature) {
             await interaction.reply({ content: "Could not find feature with that id.", ephemeral: true });
@@ -20,6 +26,9 @@ export = class extends Modal {
         feature.name = interaction.fields.getTextInputValue("feature-name");
         feature.description = interaction.fields.getTextInputValue("feature-description");
 
-        interaction.reply({ content: "Successfully edited!", ephemeral: true });
+        db.set("features", features);
+
+        await interaction.reply({ content: "Successfully edited!", ephemeral: true });
+        await (interaction.message as Message).edit(Messages.Item(interaction.user.id, feature, data));
     }
 }

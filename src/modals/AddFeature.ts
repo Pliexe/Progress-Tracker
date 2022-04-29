@@ -1,5 +1,5 @@
 import { ModalSubmitInteraction, CacheType } from "discord.js";
-import { Modal } from "../modalhandler";
+import { Modal } from "../utils/handlers/modalhandler";
 import db from 'quick.db';
 import { FeatureStatus, IFeature } from "../types";
 
