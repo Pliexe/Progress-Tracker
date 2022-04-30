@@ -15,6 +15,7 @@ export class Command {
     public options: ApplicationCommandOptionData[];
     public path!: string;
     public aliases?: string[];
+    public defaultPermissions: string[] = [];
 
     constructor(options: ICommandOptions) {
         this.description = options.description;
@@ -26,7 +27,7 @@ export class Command {
         return {
             name: this.name,
             description: this.description,
-            options: this.options
+            options: this.options,
         }
     }
 
