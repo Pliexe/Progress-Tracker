@@ -8,7 +8,7 @@ import { showCustomPages } from "../messageColletors";
 export = class extends Command {
     constructor() {
         super({
-            description: "Remove an feature from the list",
+            description: "Set feature start or end date",
             options: [{
                 type: ApplicationCommandOptionType.Integer,
                 choices: [{ name: "Start Date", value: 0 }, { name: "End Date", value: 1 }],
