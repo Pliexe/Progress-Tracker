@@ -29,7 +29,11 @@ export class Bot extends Client {
             } else if(interaction.isModalSubmit()) {
                 this.modalHandler.run(interaction);
             } else if(interaction.isMessageComponent()) {
-                this.componentHandler.run(interaction);
+                console.log(interaction.customId);
+                
+                if(/^[A-Za-z0-9_-]+:[0-9]+(:[A-Za-z0-9_-]+|)$/.test(interaction.customId)) {
+                    this.componentHandler.run(interaction);
+                }
             }
         });
     }
