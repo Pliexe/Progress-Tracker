@@ -19,7 +19,8 @@ export = class extends ComponentEx {
         const feature = features.find(x => x.id === index);
 
         if(feature) {
-            feature.status = FeatureStatus.InProgress;            
+            feature.status = FeatureStatus.InProgress;
+            feature.startDate = Date.now();
             db.set("features", features);
             await interaction.update(Messages.Item(interaction.user.id, feature, data));
         } else await interaction.update({ content: "No features have been submitted yet or non match the filter!", embeds: [], components: [] });

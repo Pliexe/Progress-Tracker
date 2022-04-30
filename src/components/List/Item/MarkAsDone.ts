@@ -20,6 +20,7 @@ export = class extends ComponentEx {
 
         if(feature) {
             feature.status = FeatureStatus.Done;
+            feature.endDate = Date.now();
             db.set("features", features);
             await interaction.update(Messages.Item(interaction.user.id, feature, data));
         } else await interaction.update({ content: "No features have been submitted yet or non match the filter!", embeds: [], components: [] });
