@@ -21,7 +21,7 @@
   },
   "scripts": {
     "dev:tsc": "tsc -w",
-    "dev:node": "nodemon .",
+    "dev:node": "nodemon -r dotenv/config .",
     "build": "tsc",
     "run": "node ./dist/index.js"
   }

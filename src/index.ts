@@ -1,7 +1,7 @@
 import { Partials } from "discord.js";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import { Bot } from "./bot";
-dotenv.config();
+// dotenv.config();
 
 if(process.env.BOT_TOKEN !== undefined) {
 
